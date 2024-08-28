@@ -1,34 +1,55 @@
 import { SectionName } from "@/lib/types";
 import { useEffect, useRef } from "react";
 import { useActiveSectionContext } from "./useActiveSectionContext";
+import { throttle } from "lodash";
+import { links } from "@/lib/data";
 
 export const useSectionScrollObserver = (
-  sectionName: SectionName,
-  topThreshold: number
+  sectionName: SectionName | null = null,
+  isSetHandleScroll: boolean = false
 ) => {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const { setActiveSection, timeOfLastClick } = useActiveSectionContext();
+  const { setActiveSection, activeSection, sections, } = useActiveSectionContext();
+  const prevActiveSection = useRef(activeSection);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (ref.current) {
-        const rect = ref.current.getBoundingClientRect();
-        console.log(rect.height);
-        if (rect.top <= topThreshold && rect.top >= rect.height * 0.3 * -1) {
-          setActiveSection(sectionName);
+    if(isSetHandleScroll){
+      const handleScroll = throttle(() => {
+        let newActiveSection = "";
+        if(activeSection.isScrollAllow){
+          Object.values(sections).forEach((value, index) => {
+            if (value.element.current) {
+              const rect = value.element.current.getBoundingClientRect();
+              if (rect.top <= value.topThreshold && rect.top >= rect.height * -1) {
+                newActiveSection = links[index].name;
+              } 
+            }
+          });
+        } else {
+          const section = sections[activeSection.section];
+          if (section && section.element.current) {
+            const rect = section.element.current.getBoundingClientRect();
+            if(rect.top <= section.topThreshold && rect.top >= rect.height * -1){
+              setActiveSection((prevValue) => ({...prevValue, isScrollAllow: true}));
+            }
+          }
         }
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+        
+        if(newActiveSection != prevActiveSection.current.section && newActiveSection != ""){
+          setActiveSection((prevValue) => ({...prevValue, section: newActiveSection as SectionName}));
+          prevActiveSection.current.section = newActiveSection as SectionName;
+        }
+      }, 100);
+  
+      window.addEventListener("scroll", handleScroll);
+      handleScroll();
+  
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, [activeSection]);
 
   return {
-    ref,
+    ref: sectionName ? sections[sectionName]?.element : null
   };
 };

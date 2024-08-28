@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import SectionHeading from "./SectionHeading";
 
 const About = () => {
-  const { ref } = useSectionScrollObserver("About", 112);
+  const { ref } = useSectionScrollObserver("About");
 
   return (
     <motion.section

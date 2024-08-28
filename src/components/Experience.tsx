@@ -12,7 +12,7 @@ import TimelineElement from "./TimelineElement";
 import { useSectionScrollObserver } from "@/hooks/useSectionScrollObserver";
 
 const Experience = () => {
-  const { ref } = useSectionScrollObserver("Experience", 112);
+  const { ref } = useSectionScrollObserver("Experience");
 
   return (
     <section ref={ref} id="experience" className="scroll-mt-28 mb-28 sm:mb-40">

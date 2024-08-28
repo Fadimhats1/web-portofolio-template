@@ -5,11 +5,10 @@ import SectionHeading from "./SectionHeading";
 import { projectsData } from "@/lib/data";
 import Project from "./Project";
 
-import { useSectionInView } from "@/hooks/useSectionInView";
 import { useSectionScrollObserver } from "@/hooks/useSectionScrollObserver";
 
 const Projects = () => {
-  const { ref } = useSectionScrollObserver("Projects", 112);
+  const { ref } = useSectionScrollObserver("Projects");
 
   return (
     <section ref={ref} id="projects" className="scroll-mt-28 mb-28">

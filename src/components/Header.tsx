@@ -1,15 +1,17 @@
 "use client";
 
-import React, { useContext, useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { links } from "@/lib/data";
 import Link from "next/link";
 import clsx from "clsx";
 import { useActiveSectionContext } from "@/hooks/useActiveSectionContext";
+import { useSectionScrollObserver } from "@/hooks/useSectionScrollObserver";
 
 const Header = () => {
-  const { activeSection, setActiveSection, setTimeOfLastClick, isClicked } =
-    useActiveSectionContext();
+  const { activeSection, setActiveSection } =
+  useActiveSectionContext();  
+  useSectionScrollObserver(null, true);
 
   return (
     <header className="z-[999] relative">
@@ -30,19 +32,17 @@ const Header = () => {
             >
               <Link
                 className={clsx(
-                  "flex w-full items-center justify-center p-3 hover:text-gray-950 transition",
-                  { "text-gray-950": activeSection === name }
+                  "flex w-full items-center justify-center p-3 hover:text-gray-950 transition static",
+                  { "text-gray-950": activeSection.section === name }
                 )}
                 href={hash}
                 onClick={() => {
-                  isClicked.current = true;
-                  setActiveSection(name);
-                  setTimeOfLastClick(Date.now());
+                  setActiveSection({section: name, isScrollAllow: false});
                 }}
               >
                 {name}
 
-                {name === activeSection && (
+                {name === activeSection.section && (
                   <motion.span
                     className="bg-gray-100 rounded-full absolute inset-0 -z-10"
                     layoutId="activeSection"

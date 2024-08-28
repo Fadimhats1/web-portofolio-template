@@ -33,6 +33,8 @@ export const links = [
   },
 ] as const;
 
+export const topThresholds = [1600, 150, 150, 150, 150, 400]
+
 export const experiencesData = [
   {
     title: "Graduated bootcamp",

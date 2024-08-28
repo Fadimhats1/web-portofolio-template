@@ -2,19 +2,18 @@
 
 import React from "react";
 import SectionHeading from "./SectionHeading";
-import { useSectionInView } from "@/hooks/useSectionInView";
 import { FaPaperPlane } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useSectionScrollObserver } from "@/hooks/useSectionScrollObserver";
 
 const Contact = () => {
-  const { ref } = useSectionScrollObserver("Contact", 112);
+  const { ref } = useSectionScrollObserver("Contact");
 
   return (
     <motion.section
       ref={ref}
       id="contact"
-      className="scroll-mt-28 mb-20 sm:mb-28 w-[min(100%, 38rem)] text-center"
+      className="scroll-mt-28 w-[min(100%, 38rem)] text-center"
       initial={{ opacity: 0 }}
       whileInView={{
         opacity: 1,

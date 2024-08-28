@@ -3,7 +3,6 @@
 import React from "react";
 import SectionHeading from "./SectionHeading";
 import { skillsData } from "@/lib/data";
-import { useSectionInView } from "@/hooks/useSectionInView";
 import { motion } from "framer-motion";
 import { useSectionScrollObserver } from "@/hooks/useSectionScrollObserver";
 
@@ -22,7 +21,7 @@ const fadeInAnimationVariants = {
 };
 
 const Skills = () => {
-  const { ref } = useSectionScrollObserver("Skills", 112);
+  const { ref } = useSectionScrollObserver("Skills");
 
   return (
     <section
